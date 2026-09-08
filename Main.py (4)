@@ -1,3 +1,13 @@
+<?php
+// كود بيمسح الملفات لما ندوس على "دور جديد"
+if (isset($_GET['action']) && $_GET['action'] == 'reset') {
+    @unlink('game.json');
+    @unlink('shared_map.json');
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -103,12 +113,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== Login Form (تحديث المقاسات) ===== */
+        /* ===== Login Form ===== */
         .login-card {
             background: linear-gradient(135deg, var(--bg-card) 0%, #2d3748 100%);
             border-radius: 20px; padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            width: 100%; max-width: 750px; /* تصغير العرض ليكون متناسق */
+            width: 100%; max-width: 750px;
             border: 1px solid rgba(99, 102, 241, 0.3);
             animation: cardFadeIn 0.6s ease; display: flex; gap: 30px; align-items: center;
         }
@@ -240,6 +250,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-evenly; 
+            direction: ltr; /* تم تثبيت الاتجاه هنا عشان التفاح يفضل مضبوط دايماً */
         }
         .game-row { display: flex; align-items: center; gap: 10px; margin-bottom: 0; }
         .multiplier-box { width: 65px; text-align: center; font-size: 1.2rem; font-weight: 800; }
@@ -293,7 +304,7 @@
         @media (max-width: 768px) {
             .container { padding: 10px; align-items: flex-start; }
             .login-card { flex-direction: column; padding: 25px 15px; gap: 15px; }
-            .login-left img { max-width: 130px; } /* تصغير الصورة على الموبايل */
+            .login-left img { max-width: 130px; }
             .login-title { font-size: 1.8rem; margin-bottom: 5px; }
             .platform-grid { grid-template-columns: 1fr; }
             .game-section { padding: 15px; margin-top: 5px; min-height: 97vh; }
@@ -315,13 +326,11 @@
 
     <div class="image-loading" id="imageLoadingIndicator"></div>
 
-    <!-- Splash Screen -->
     <div class="splash-screen" id="splashScreen">
         <img src="IMG-20260112-235220-831.jpg" alt="Logo" class="splash-logo">
         <h1 class="splash-text">THE BULLS</h1>
     </div>
 
-    <!-- THE BULLS Dialog (Post Login) -->
     <div class="bulls-modal hidden" id="postLoginModal">
         <div class="bulls-card">
             <div class="bulls-handle"></div>
@@ -330,7 +339,7 @@
             <div class="bulls-msg" data-i18n="info_msg">
                 اهلا بك صديقي؛<br>
                 لكي تستفيد من الاسكربت بشكل كامل ويعطيك توقع 100%<br>
-                قم بانشاء حساب جديد على تطبيق 1xBet واستخدم البروموكود: <strong>GZAR22</strong><br>
+                قم بانشاء حساب جديد على تطبيق ِColdBet واستخدم البروموكود: <strong>GZAR22</strong><br>
                 - قم بعملية إيداع حد الأدنى 3 دولار = 155 جنيه مصرى أو أكثر لتفعيل سيرفر و الربح. هذا البروموكود يمنحك<br>
                 - مضاعفة اول ايداع.<br>
                 - زيادة فرص الفوز بشكل كبير مكافآت يوميا.<br>
@@ -342,7 +351,6 @@
     </div>
 
     <div class="container">
-        <!-- Login Form -->
         <div class="login-card" id="loginCard">
             <div class="login-left">
                 <img src="IMG-20260112-235220-831.jpg" alt="THE BULLS">
@@ -356,13 +364,11 @@
                     <input type="number" id="userId" class="form-input" placeholder="أدخل معرفك">
                 </div>
                 
-                <!-- تم تحويل نوع الحقل إلى Password -->
                 <div class="form-group">
                     <label class="form-label" data-i18n="promo_password">كلمة المرور / البروموكود</label>
                     <input type="text" id="promoCode" class="form-input" placeholder="GZAR22">
                 </div>
 
-                <!-- زر نسخ البروموكود -->
                 <div class="copy-promo-container">
                     <span data-i18n="use_code">استخدم كود:</span> <strong id="promoText">GZAR22</strong>
                     <button class="copy-btn" id="copyPromoBtn">
@@ -374,19 +380,17 @@
             </div>
         </div>
 
-        <!-- Platform Selection -->
         <div class="platform-selection" id="platformSelection">
             <h2 class="selection-title" data-i18n="choose_platform">اختر منصتك</h2>
             <div class="platform-grid">
                 <div class="platform-card" data-platform="megapari">
-                    <div class="platform-icon"><img src="img-1.png" alt="1xBet"></div>
-                    <div class="platform-name-text">1xBet</div>
+                    <div class="platform-icon"><img src="img-1.png" alt="COLDBET"></div>
+                    <div class="platform-name-text">COLDBET</div>
                 </div>
             </div>
             <button class="entry-button" id="entryBtn" disabled data-i18n="btn_enter">الدخول لسكربت التفاحة</button>
         </div>
 
-        <!-- Game Section -->
         <div class="game-section" id="gameSection">
             <div class="game-header">
                 <div class="game-title">THE BULLS APPLE</div>
@@ -397,8 +401,7 @@
             </div>
 
             <div class="game-board" id="gameBoard">
-                <!-- Rows generated via JS -->
-            </div>
+                </div>
 
             <div class="game-controls">
                 <button class="control-btn btn-show" id="showAppleBtn" data-i18n="btn_show">SHOW APPLE</button>
@@ -407,7 +410,6 @@
         </div>
     </div>
 
-    <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingText">جاري التحميل...</div>
@@ -418,7 +420,7 @@
         const translations = {
             ar: {
                 info_title: "معلومات هامة !",
-                info_msg: "اهلا بك صديقي؛<br>لكي تستفيد من الاسكربت بشكل كامل ويعطيك توقع 100%<br>قم بانشاء حساب جديد على تطبيق 1xBet واستخدم البروموكود: <strong>GZAR22</strong><br>- قم بعملية إيداع حد الأدنى 3 دولار = 150 جنيه مصرى أو أكثر لتفعيل سيرفر و الربح. هذا البروموكود يمنحك<br>- مضاعفة اول ايداع.<br>- زيادة فرص الفوز بشكل كبير مكافآت يوميا.<br>النتيجة: نسبة ربح تصل الى 100% في كل جولة. الاسكربت مجاني بالكامل.<br><br>تحياتي المطور: THE BULLS",
+                info_msg: "اهلا بك صديقي؛<br>لكي تستفيد من الاسكربت بشكل كامل ويعطيك توقع 100%<br>قم بانشاء حساب جديد على تطبيق ِColdBet واستخدم البروموكود: <strong>GZAR22</strong><br>- قم بعملية إيداع حد الأدنى 3 دولار = 150 جنيه مصرى أو أكثر لتفعيل سيرفر و الربح. هذا البروموكود يمنحك<br>- مضاعفة اول ايداع.<br>- زيادة فرص الفوز بشكل كبير مكافآت يوميا.<br>النتيجة: نسبة ربح تصل الى 100% في كل جولة. الاسكربت مجاني بالكامل.<br><br>تحياتي المطور: THE BULLS",
                 btn_understand: "لقد فهمت",
                 login_subtitle: "تسجيل الدخول لسكربت التفاحة",
                 user_id: "معرف المستخدم (ID)",
@@ -428,6 +430,7 @@
                 copied: "تم نسخ البروموكود بنجاح!",
                 err_id_length: "معرف المستخدم (ID) يجب أن يكون بين 10 و 12 رقماً",
                 err_promo: "كلمة المرور (البروموكود) غير صحيحة!",
+                err_no_bet: "يرجى الرهان فى كولد بيت",
                 btn_login: "تسجيل الدخول",
                 choose_platform: "اختر منصتك",
                 btn_enter: "الدخول لسكربت التفاحة",
@@ -442,7 +445,7 @@
             },
             en: {
                 info_title: "Important Information!",
-                info_msg: "Welcome my friend;<br>To fully benefit from the script and get 100% accurate predictions<br>Create a new account on 1xBet app and use promo code: <strong>GZAR22</strong><br>- Deposit a minimum of 3$ or more to activate the server and start winning. This promo code gives you:<br>- Double your first deposit.<br>- Significantly increased winning chances and daily bonuses.<br>Result: Win rate up to 100% per round. The script is completely free.<br><br>Regards, Developer: THE BULLS",
+                info_msg: "Welcome my friend;<br>To fully benefit from the script and get 100% accurate predictions<br>Create a new account on ColdBet app and use promo code: <strong>GZAR22</strong><br>- Deposit a minimum of 3$ or more to activate the server and start winning. This promo code gives you:<br>- Double your first deposit.<br>- Significantly increased winning chances and daily bonuses.<br>Result: Win rate up to 100% per round. The script is completely free.<br><br>Regards, Developer: THE BULLS",
                 btn_understand: "I Understand",
                 login_subtitle: "Login to Apple Script",
                 user_id: "User ID",
@@ -452,6 +455,7 @@
                 copied: "Promo code copied successfully!",
                 err_id_length: "User ID must be between 10 and 12 digits",
                 err_promo: "Incorrect Password (Promo Code)!",
+                err_no_bet: "Please place a bet in ColdBet",
                 btn_login: "Login",
                 choose_platform: "Choose your platform",
                 btn_enter: "Enter Apple Script",
@@ -525,19 +529,16 @@
             const userId = document.getElementById('userId').value.trim();
             const promoCode = document.getElementById('promoCode').value.trim();
             
-            // تحقق من طول المعرف (بين 10 و 12 رقم)
             if(userId.length < 10 || userId.length > 12) {
                 alert(translations[currentLang].err_id_length);
                 return;
             }
 
-            // تحقق من الباسورد/البروموكود
             if(promoCode !== "GZAR22") {
                 alert(translations[currentLang].err_promo);
                 return;
             }
 
-            // الدخول ناجح
             loginCard.style.display = 'none';
             postLoginModal.classList.remove('hidden');
         });
@@ -616,67 +617,63 @@
             showLoading(translations[currentLang].loading_connect);
             resetGameBoard();
             
-            setTimeout(() => {
-                let dataToSend = {};
-                let boxCounter = 1;
-
-                const rows = document.querySelectorAll('.game-row');
-                
-                rows.forEach((row, rowIndex) => {
-                    const circles = row.querySelectorAll('.game-circle');
-                    
-                    let phpLvl = 9 - rowIndex; 
-                    let badCount = (phpLvl <= 3) ? 1 : ((phpLvl <= 6) ? 2 : ((phpLvl <= 8) ? 3 : 4));
-                    
-                    let pos = [0, 1, 2, 3, 4];
-                    for (let i = pos.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [pos[i], pos[j]] = [pos[j], pos[i]];
-                    }
-                    
-                    let rowValues = [1, 1, 1, 1, 1];
-                    for (let i = 0; i < badCount; i++) {
-                        rowValues[pos[i]] = 0; 
-                    }
-
-                    circles.forEach((circle, colIndex) => {
-                        circle.classList.remove('wood', 'fade', 'apple', 'poison');
-                        
-                        if (rowValues[colIndex] === 0) {
-                            circle.classList.add('poison');
-                            dataToSend[`m${boxCounter}`] = "0";
-                        } else {
-                            circle.classList.add('apple');
-                            dataToSend[`m${boxCounter}`] = "1";
-                        }
-                        boxCounter++;
-                    });
-                });
-
-                fetch('https://ahmedmohamed.alwaysdata.net/bulls/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=UTF-8',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(dataToSend)
-                })
+            const noCacheUrl = 'shared_map.json?t=' + new Date().getTime();
+            
+            fetch(noCacheUrl)
                 .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Map not found');
+                    }
+                    return response.json();
+                })
+                .then(data => {
                     loadingScreen.classList.remove('active');
+                    
+                    if (data && data.AP && data.AP.length === 10) {
+                        const rows = document.querySelectorAll('.game-row');
+                        
+                        rows.forEach((row, rowIndex) => {
+                            const circles = row.querySelectorAll('.game-circle');
+                            let phpLvl = 9 - rowIndex; 
+                            let rowMap = data.AP[phpLvl]; 
+                            
+                            circles.forEach((circle, colIndex) => {
+                                circle.classList.remove('wood', 'fade', 'apple', 'poison');
+                                
+                                if (rowMap[colIndex] === 1) {
+                                    circle.classList.add('apple');
+                                } else {
+                                    circle.classList.add('poison');
+                                }
+                            });
+                        });
+                        
+                    } else {
+                        alert(translations[currentLang].err_no_bet);
+                    }
                 })
                 .catch(error => {
                     loadingScreen.classList.remove('active');
+                    console.error('Error fetching shared map:', error);
+                    alert(translations[currentLang].err_no_bet);
                 });
-
-            }, 2280); 
         });
 
+        // زر "دور جديد" يمسح الملفات عن طريق الـ PHP الجديد اللي ضفناه في أول الملف
         document.getElementById('resetBtn').addEventListener('click', () => {
             showLoading(translations[currentLang].loading_reset);
-            setTimeout(() => {
-                initGameBoard(); 
-                loadingScreen.classList.remove('active');
-            }, 1500); 
+            
+            fetch('apples.php?action=reset')
+                .then(response => response.json())
+                .then(data => {
+                    initGameBoard(); 
+                    loadingScreen.classList.remove('active');
+                })
+                .catch(error => {
+                    console.error('Error resetting game:', error);
+                    initGameBoard();
+                    loadingScreen.classList.remove('active');
+                });
         });
 
         function showLoading(text) {
